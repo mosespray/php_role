@@ -1,0 +1,78 @@
+---
+# tasks file for /etc/ansible/roles/php_role
+- rpm_key:
+    state: present
+    key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018
+
+- name: Install remi repo.
+  yum:
+    name: "http://rpms.remirepo.net/enterprise/remi-release-8.rpm"
+    state: present
+
+- name: Reset PHP module streams
+  ansible.builtin.command: dnf module reset php -y
+  become: yes
+
+- name: Enable the php:remi-7.4 module stream
+  ansible.builtin.command: dnf module enable php:remi-7.4 -y
+  become: yes
+
+- name: Install php package
+  yum: name=php update_cache=yes
+
+- name: Copy the edited php.ini file
+  copy:
+    src: php.ini
+    dest: /etc/php.ini
+    force: yes
+
+- name: Install php-ldap package
+  yum: name=php-ldap update_cache=yes
+
+- name: Install php-imagick package
+  yum: name=php-imagick update_cache=yes
+
+- name: Install php-common package
+  yum: name=php-common update_cache=yes
+
+- name: Install php-gd package
+  yum: name=php-gd update_cache=yes
+
+- name: Install php-imap package
+  yum: name=php-imap update_cache=yes
+
+- name: Install php-json package
+  yum: name=php-json update_cache=yes
+
+- name: Install php-curl package
+  yum: name=php-curl update_cache=yes
+
+- name: Install php-zip package
+  yum: name=php-zip update_cache=yes
+
+- name: Install php-xml package
+  yum: name=php-xml update_cache=yes
+
+- name: Install php-mbstring package
+  yum: name=php-mbstring update_cache=yes
+
+- name: Install php-bz2 package
+  yum: name=php-bz2 update_cache=yes
+
+- name: Install php-intl package
+  yum: name=php-intl update_cache=yes
+
+- name: Install php-gmp package
+  yum: name=php-gmp update_cache=yes
+
+- name: Install php-pgsql package
+  yum: name=php-pgsql update_cache=yes
+
+- name: Install php-pdo_pgsql package
+  yum: name=php-pdo_pgsql update_cache=yes
+
+- name: Enabling and Starting the service httpd
+  service:
+    name: httpd
+    enabled: yes
+    state: restarted

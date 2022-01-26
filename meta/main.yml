@@ -1,0 +1,5 @@
+
+# roles/guest-tools_role/meta/main.yml
+---
+dependencies:
+  - role: httpd_role
